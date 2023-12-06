@@ -104,6 +104,8 @@ library Errors {
   string public constant SDT_STABLE_DEBT_OVERFLOW = '79';
   string public constant SDT_BURN_EXCEEDS_BALANCE = '80';
   string public constant LPC_CALLER_NOT_POOL_OR_EMERGENCY_ADMIN = '83'; // 'The caller must be the emergency or pool admin'
+  string public constant LPC_CALLER_NOT_POOL_OR_EMERGENCY_OR_PROOF_OF_RESERVE_ADMIN = '84'; // 'The caller must be the emergency or pool or proof of reserve admin'
+  string public constant LPC_CALLER_NOT_POOL_OR_PROOF_OF_RESERVE_ADMIN = '85'; // 'The caller must be the pool or proof of reserve admin'
 
   enum CollateralManagerErrors {
     NO_ERROR,

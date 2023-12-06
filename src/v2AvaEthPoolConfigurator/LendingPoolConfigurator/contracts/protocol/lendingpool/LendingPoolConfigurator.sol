@@ -53,7 +53,26 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
     _;
   }
 
-  uint256 internal constant CONFIGURATOR_REVISION = 0x2;
+  modifier onlyPoolOrEmergencyAdminOrProofOfReserve() {
+    require(
+      addressesProvider.getPoolAdmin() == msg.sender ||
+        addressesProvider.getEmergencyAdmin() == msg.sender ||
+        addressesProvider.getAddress('PROOF_OF_RESERVE_ADMIN') == msg.sender,
+      Errors.LPC_CALLER_NOT_POOL_OR_EMERGENCY_OR_PROOF_OF_RESERVE_ADMIN
+    );
+    _;
+  }
+
+  modifier onlyPoolOrProofOfReserveAdmin() {
+    require(
+      addressesProvider.getPoolAdmin() == msg.sender ||
+        addressesProvider.getAddress('PROOF_OF_RESERVE_ADMIN') == msg.sender,
+      Errors.LPC_CALLER_NOT_POOL_OR_PROOF_OF_RESERVE_ADMIN
+    );
+    _;
+  }
+
+  uint256 internal constant CONFIGURATOR_REVISION = 0x3;
 
   function getRevision() internal pure override returns (uint256) {
     return CONFIGURATOR_REVISION;
@@ -264,7 +283,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
    * @dev Disables borrowing on a reserve
    * @param asset The address of the underlying asset of the reserve
    **/
-  function disableBorrowingOnReserve(address asset) external onlyPoolAdmin {
+  function disableBorrowingOnReserve(address asset) external onlyPoolOrProofOfReserveAdmin {
     DataTypes.ReserveConfigurationMap memory currentConfig = pool.getConfiguration(asset);
 
     currentConfig.setBorrowingEnabled(false);
@@ -344,7 +363,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
    * @dev Disable stable rate borrowing on a reserve
    * @param asset The address of the underlying asset of the reserve
    **/
-  function disableReserveStableRate(address asset) external onlyPoolAdmin {
+  function disableReserveStableRate(address asset) external onlyPoolOrProofOfReserveAdmin {
     DataTypes.ReserveConfigurationMap memory currentConfig = pool.getConfiguration(asset);
 
     currentConfig.setStableRateBorrowingEnabled(false);
@@ -389,7 +408,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
    *  but allows repayments, liquidations, rate rebalances and withdrawals
    * @param asset The address of the underlying asset of the reserve
    **/
-  function freezeReserve(address asset) external onlyPoolOrEmergencyAdmin {
+  function freezeReserve(address asset) external onlyPoolOrEmergencyAdminOrProofOfReserve {
     DataTypes.ReserveConfigurationMap memory currentConfig = pool.getConfiguration(asset);
 
     currentConfig.setFrozen(true);

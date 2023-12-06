@@ -1,56 +1,51 @@
-# BGD forge template
+# Aave Proof of Reserve overview
 
-Basic template with prettier and rest configuration
+Repository containing the update of the Pool Configurator and payload to activate Proof of Reserve mechanism for Aave Avalanche V2 pool.
 
-To create a new project using this template run
+Proof-of-Reserve is a system by Chainlink that allows for reliable monitoring of reserve assets, and usage of that data feed directly on-chain. If anomaly will be detected for a single asset, the system will try to apply the highest possible protections on the pool.
 
-```shell
-$ forge init --template bgd-labs/bgd-forge-template my_new_project
+More detailed documentation on Proof of Reserve could be found [here](https://github.com/bgd-labs/aave-proof-of-reserve/blob/main/README.md)
+
+## Technical details
+
+The following modifiers are added to the PoolConfigurator:
+
+- `onlyPoolOrEmergencyAdminOrProofOfReserve` is applied to the `freezeReserve()` method.
+- `onlyPoolOrProofOfReserveAdmin` is applied to the `disableBorrowingOnReserve()` and `disableReserveStableRate()` methods.
+
+[ConfiguratorUpdatePayload](./src/payloads/ConfiguratorUpdatePayload.sol) updates the implementation of the PoolConfigurator and sets [Proof of Reserve Executor v2](https://snowtrace.io/address/0x7fc3FCb14eF04A48Bb0c12f0c39CD74C249c37d8) as the `PROOF_OF_RESERVE_ADMIN`;
+
+## Diffs
+
+[PoolConfigurator](./diffs/v2AmmEthPoolConfigurator.md)
+[PoolConfigurator storage layout](./diffs/v2AvaPoolConfigurator_layout_diff.md)
+
+## SetUp
+
+This repo has forge and npm dependencies, so you will need to install foundry then run:
+
 ```
-
-## Recommended modules
-
-[bgd-labs/solidity-utils](https://github.com/bgd-labs/solidity-utils) - common contracts we use everywhere, ie transparent proxy and around
-
-[bgd-labs/aave-address-book](https://github.com/bgd-labs/aave-address-book) - the best and only source about all deployed Aave ecosystem related contracts across all the chains
-
-[bgd-labs/aave-helpers](https://github.com/bgd-labs/aave-helpers) - useful utils for integration, and not only testing related to Aave ecosystem contracts
-
-[Rari-Capital/solmate](https://github.com/Rari-Capital/solmate) - one of the best sources of base contracts for ERC20, ERC21, which will work with transparent proxy pattern out of the box
-
-[OpenZeppelin/openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) - another very reputable and well organized source of base contracts for tokens, access control and many others
-
-## Development
-
-This project uses [Foundry](https://getfoundry.sh). See the [book](https://book.getfoundry.sh/getting-started/installation.html) for detailed instructions on how to install and use Foundry.
-The template ships with sensible default so you can use default `foundry` commands without resorting to `MakeFile`.
-
-### Setup
-
-```sh
-cp .env.example .env
 forge install
 ```
 
-### Test
+and also run:
 
-```sh
+```
+yarn
+```
+
+## Tests
+
+To run the tests just run:
+
+```
 forge test
 ```
 
-## Advanced features
+## Copyright
 
-### Diffing
+Copyright © 2023, Aave DAO, represented by its governance smart contracts.
 
-For contracts upgrading implementations it's quite important to diff the implementation code to spot potential issues and ensure only the intended changes are included.
-Therefore the `Makefile` includes some commands to streamline the diffing process.
+Created by [BGD Labs](https://bgdlabs.com/).
 
-#### Download
-
-You can `download` the current contract code of a deployed contract via `make download chain=polygon address=0x00`. This will download the contract source for specified address to `src/etherscan/chain_address`. This command works for all chains with a etherscan compatible block explorer.
-
-#### Git diff
-
-You can `git-diff` a downloaded contract against your src via `make git-diff before=./etherscan/chain_address after=./src out=filename`. This command will diff the two folders via git patience algorithm and write the output to `diffs/filename.md`.
-
-**Caveat**: If the onchain implementation was verified using flatten, for generating the diff you need to flatten the new contract via `forge flatten` and supply the flattened file instead fo the whole `./src` folder.
+[MIT license](./LICENSE)
