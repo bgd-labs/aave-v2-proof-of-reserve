@@ -1,7 +1,7 @@
 ```diff
-diff --git a/etherscan/flattened/v2AmmEthPoolConfigurator/LendingPoolConfigurator.sol b/src/v2AvaEthPoolConfigurator/LendingPoolConfigurator/flattened/LendingPoolConfigurator.sol
+diff --git a/etherscan/flattened/v2AvaEthPoolConfigurator/LendingPoolConfigurator.sol b/src/v2AvaEthPoolConfigurator/LendingPoolConfigurator/flattened/LendingPoolConfigurator.sol
 index 4229340..a21f88d 100644
---- a/etherscan/flattened/v2AmmEthPoolConfigurator/LendingPoolConfigurator.sol
+--- a/etherscan/flattened/v2AvaEthPoolConfigurator/LendingPoolConfigurator.sol
 +++ b/src/v2AvaEthPoolConfigurator/LendingPoolConfigurator/flattened/LendingPoolConfigurator.sol
 @@ -637,6 +637,8 @@ library Errors {
    string public constant SDT_STABLE_DEBT_OVERFLOW = '79';
