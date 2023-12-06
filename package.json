@@ -1,23 +1,27 @@
 {
-  "name": "bgd-forge-template",
+  "name": "aave-v2-proof-of-reserve",
   "version": "1.0.0",
   "scripts": {
     "lint": "prettier ./",
-    "lint:fix": "npm run lint -- --write"
+    "lint:fix": "npm run lint -- --write",
+    "clean-storage-report": "tsx ./js_scripts/preprocess-storage-report.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bgd-labs/bgd-forge-template.git"
+    "url": "git+https://github.com/bgd-labs/aave-v2-proof-of-reserve.git"
   },
   "keywords": [],
   "author": "BGD labs",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bgd-labs/bgd-forge-template/issues"
+    "url": "https://github.com/bgd-labs/aave-v2-proof-of-reserve/issues"
   },
-  "homepage": "https://github.com/bgd-labs/bgd-forge-template#readme",
+  "homepage": "https://github.com/bgd-labs/aave-v2-proof-of-reserve#readme",
   "devDependencies": {
+    "@types/node": "^20.10.3",
     "prettier": "2.8.7",
-    "prettier-plugin-solidity": "1.1.3"
+    "prettier-plugin-solidity": "1.1.3",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.2"
   }
 }
